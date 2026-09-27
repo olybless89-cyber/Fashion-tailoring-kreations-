@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #000000;
+  --color-paper: #ffffff;
+  --color-chalk: #ededea;
+  --color-line: #d9d9d4;
+  --color-stone: #62625d;
+  --color-indigo: #1f2a55;
+  --color-indigo-soft: #2c3a6e;
+  --color-coral: #b8412e;
+  --font-sans: "Archivo Variable", ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --radius-soft: 2px;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-stretch: 100%;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Condensed display type — echoes the tall, narrow letters of the FTK mark */
+.display {
+  font-stretch: 62%;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  line-height: 0.9;
+}
+.display-lg {
+  font-size: clamp(3.2rem, 9vw, 8.5rem);
+}
+.display-md {
+  font-size: clamp(2.4rem, 5.5vw, 4.75rem);
+}
+.display-sm {
+  font-size: clamp(1.75rem, 3.2vw, 2.6rem);
+  line-height: 0.95;
+}
+.condensed {
+  font-stretch: 75%;
+}
+.tagline {
+  font-stretch: 62%;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-coral);
+  outline-offset: 3px;
+}
+
+/* The stitch: a dashed seam used as the site's one structural motif */
+.seam {
+  height: 0;
+  border-top: 1.5px dashed currentColor;
+  opacity: 0.55;
+}
+
+.stitch-draw path {
+  stroke-dasharray: 10 8;
+  animation: stitch 1.8s cubic-bezier(0.6, 0, 0.2, 1) 0.3s both;
+}
+@keyframes stitch {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stitch-draw path {
+    animation: none;
+  }
+  * {
+    scroll-behavior: auto !important;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.field {
+  width: 100%;
+  border: 1px solid var(--color-line);
+  background: #fff;
+  padding: 0.8rem 0.9rem;
+  border-radius: var(--radius-soft);
+  transition: border-color 0.15s;
+}
+.field:focus {
+  outline: none;
+  border-color: var(--color-ink);
+}
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3.25rem;
+  padding: 0 1.75rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: var(--radius-soft);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  cursor: pointer;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-ink {
+  background: var(--color-ink);
+  color: #fff;
+}
+.btn-ink:hover:not(:disabled) {
+  background: var(--color-indigo);
+}
+.btn-line {
+  border: 1px solid currentColor;
+}
+.btn-line:hover {
+  background: var(--color-ink);
+  color: #fff;
+  border-color: var(--color-ink);
+}
+.btn-paper {
+  background: #fff;
+  color: var(--color-ink);
+}
+.btn-paper:hover {
+  background: var(--color-chalk);
+}
+
+.prose-ftk p {
+  margin-bottom: 1em;
+  max-width: 62ch;
+}

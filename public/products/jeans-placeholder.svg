@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200">
+  <rect width="900" height="1200" fill="#1F2A55"/>
+  <g fill="none" stroke="#EDEDEA" stroke-width="6" stroke-linejoin="round">
+    <path d="M300 220 H600 L660 1020 H500 L452 470 L400 1020 H240 Z"/>
+  </g>
+  <g fill="none" stroke="#C4553F" stroke-width="4" stroke-dasharray="16 12">
+    <path d="M318 250 H582"/>
+    <path d="M318 250 Q360 360 452 330"/>
+    <path d="M582 250 Q540 360 452 330"/>
+    <path d="M452 250 V470"/>
+  </g>
+  <text x="450" y="1110" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#EDEDEA" opacity=".85">Photo coming soon</text>
+</svg>
