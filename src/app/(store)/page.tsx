@@ -5,36 +5,49 @@ import { ProductCard, isRemote } from "@/components/product-card";
 import { StitchArc } from "@/components/stitch";
 import { whatsappLink } from "@/lib/config";
 
+// Tile sizes for the collection mosaic, in collection order (reorder collections in /admin)
+const tile = ["col-span-2 row-span-2", "", "", "", "", "col-span-2 lg:col-span-2", "col-span-2 lg:col-span-2"];
+
 export default async function Home() {
   const [cats, featured] = await Promise.all([getCategories(), getProducts({ featured: true, limit: 8 })]);
   const wa = whatsappLink("Hello FTK, I'd like to book a fitting.");
+  // Agbada leads the mosaic as the large tile; the rest follow the collection order set in /admin
+  const mosaic = [...cats.filter((c) => c.slug === "agbada"), ...cats.filter((c) => c.slug !== "agbada")];
 
   return (
     <>
       {/* Hero */}
-      <section className="mx-auto max-w-[1440px] px-4 pt-8 sm:px-6 lg:px-10 lg:pt-12">
-        <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-10">
-          <div className="lg:col-span-7 lg:pb-10">
-            <h1 className="display display-lg">
-              Cut to your
+      <section className="relative isolate overflow-hidden bg-ink text-paper" aria-labelledby="hero-title">
+        {/* Ambient backdrop: the agbada itself, blurred into a crimson glow, laid over adire pattern */}
+        <div aria-hidden className="absolute inset-0 -z-10">
+          <Image src="/media/hero-agbada.jpg" alt="" fill priority sizes="100vw" className="scale-125 object-cover opacity-55 blur-3xl saturate-150" />
+          <div className="absolute inset-0 bg-[linear-gradient(100deg,#000_22%,rgba(0,0,0,.82)_48%,rgba(0,0,0,.35)_100%)]" />
+          <div className="absolute inset-0 bg-[url('/media/adire.svg')] bg-[length:160px_160px] opacity-[0.07]" />
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink to-transparent" />
+        </div>
+
+        <div className="mx-auto grid min-h-[calc(100svh-4rem)] max-w-[1440px] items-center gap-10 px-4 py-12 sm:px-6 lg:min-h-[calc(100svh-5rem)] lg:grid-cols-12 lg:px-10 lg:py-16">
+          <div className="lg:col-span-7">
+            <p className="tagline text-sm text-paper/70">Fashion Tailoring Kreation</p>
+            <h1 id="hero-title" className="display display-lg mt-5">
+              Cut to
               <br />
-              measure.
-              <br />
-              Worn like
-              <br />
-              you own the room.
+              your measure.
             </h1>
-            <StitchArc animate className="mt-6 h-8 w-full max-w-xl text-coral" />
-            <p className="mt-6 max-w-[46ch] text-lg text-stone">
-              Senator, agbada, native two-piece, English and office wear, sewn to your measurements and delivered to your door.
+            <StitchArc animate className="mt-6 h-8 w-full max-w-lg text-coral" />
+            <p className="mt-6 max-w-[44ch] text-lg text-paper/80">
+              Agbada, senator, native and English wear, sewn by hand to your measurements and delivered to your door.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/shop" className="btn btn-ink">Shop the collection</Link>
-              <Link href="/made-to-measure" className="btn btn-line">How made to measure works</Link>
+            <div className="mt-9 flex flex-wrap gap-3">
+              <Link href="/shop" className="btn btn-paper">Shop the collection</Link>
+              <Link href="/made-to-measure" className="btn btn-ghost">
+                How made to measure works
+              </Link>
             </div>
           </div>
-          <div className="relative lg:col-span-5">
-            <div className="relative aspect-[9/16] max-h-[78vh] w-full overflow-hidden bg-chalk sm:aspect-[4/5] lg:aspect-[9/14]">
+
+          <div className="relative mx-auto w-full max-w-[420px] lg:col-span-5 lg:mr-0">
+            <div className="relative aspect-[9/14] overflow-hidden shadow-[0_40px_120px_-20px_rgba(184,65,46,.55)] ring-1 ring-paper/15">
               <video
                 className="absolute inset-0 h-full w-full object-cover"
                 src="/media/hero-agbada.mp4"
@@ -46,38 +59,60 @@ export default async function Home() {
                 preload="metadata"
                 aria-label="Crimson embroidered agbada on a mannequin in the FTK atelier"
               />
+              <div aria-hidden className="absolute inset-3 border border-dashed border-paper/40" />
             </div>
             <Link
               href="/product/crimson-embroidered-agbada"
-              className="absolute bottom-4 left-4 right-4 flex items-center justify-between bg-paper px-4 py-3 text-sm font-medium"
+              className="group absolute -bottom-5 left-4 right-4 flex items-center justify-between bg-paper px-5 py-4 text-ink sm:-left-8 sm:right-auto sm:min-w-[20rem]"
             >
-              <span>Crimson embroidered agbada</span>
-              <span className="underline underline-offset-4">View piece</span>
+              <span>
+                <span className="block text-xs text-stone">Made to measure</span>
+                <span className="font-semibold">Crimson embroidered agbada</span>
+              </span>
+              <span className="ml-6 text-sm underline underline-offset-4 group-hover:text-coral">View</span>
             </Link>
           </div>
         </div>
+
+        <nav aria-label="Collections" className="border-t border-paper/15">
+          <div className="no-scrollbar mx-auto flex max-w-[1440px] gap-8 overflow-x-auto px-4 py-4 sm:px-6 lg:justify-between lg:px-10">
+            {cats.map((c) => (
+              <Link key={c.slug} href={`/collections/${c.slug}`} className="condensed whitespace-nowrap text-lg font-medium text-paper/75 transition-colors hover:text-paper">
+                {c.name}
+              </Link>
+            ))}
+          </div>
+        </nav>
       </section>
 
-      {/* Collection index */}
-      <section className="mx-auto mt-24 max-w-[1440px] px-4 sm:px-6 lg:mt-32 lg:px-10" aria-labelledby="collections">
+      {/* Collections */}
+      <section className="mx-auto mt-20 max-w-[1440px] px-4 sm:px-6 lg:mt-28 lg:px-10" aria-labelledby="collections">
         <div className="flex items-end justify-between gap-6">
           <h2 id="collections" className="display display-md">The collections</h2>
           <Link href="/shop" className="hidden text-sm font-medium underline underline-offset-4 sm:inline">See every piece</Link>
         </div>
-        <ul className="mt-8 border-t border-ink">
-          {cats.map((c) => (
-            <li key={c.slug} className="border-b border-line">
-              <Link href={`/collections/${c.slug}`} className="group grid grid-cols-[1fr_auto] items-center gap-4 py-4 sm:grid-cols-[1fr_1fr_auto] sm:py-5">
-                <span className="display display-sm transition-colors group-hover:text-coral">{c.name}</span>
-                <span className="hidden text-stone sm:block">{c.tagline}</span>
-                <span className="flex items-center gap-4">
-                  <span className="text-sm tabular-nums text-stone">{c.count} {c.count === 1 ? "piece" : "pieces"}</span>
-                  {c.image && (
-                    <span className="relative block h-16 w-12 overflow-hidden bg-chalk sm:h-20 sm:w-16">
-                      <Image src={c.image} alt="" fill sizes="64px" unoptimized={isRemote(c.image)} className="object-cover" />
-                    </span>
-                  )}
-                </span>
+        <ul className="mt-8 grid auto-rows-[15rem] grid-cols-2 gap-3 sm:auto-rows-[18rem] lg:grid-cols-4 lg:gap-4">
+          {mosaic.map((c, i) => (
+            <li key={c.slug} className={tile[i] ?? ""}>
+              <Link href={`/collections/${c.slug}`} className="group relative block h-full overflow-hidden bg-indigo">
+                {c.image && (
+                  <Image
+                    src={c.image}
+                    alt=""
+                    fill
+                    unoptimized={isRemote(c.image)}
+                    sizes={i === 0 ? "(min-width:1024px) 50vw, 100vw" : "(min-width:1024px) 25vw, 50vw"}
+                    className={`object-cover transition-transform duration-700 group-hover:scale-[1.04] ${isRemote(c.image) ? "object-center" : "object-top"}`}
+                  />
+                )}
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-4 text-paper sm:p-5">
+                  <h3 className={`display ${i === 0 ? "display-md" : "text-[1.35rem] sm:text-[1.75rem] lg:text-[2.1rem]"}`}>{c.name}</h3>
+                  <p className="mt-1 text-sm text-paper/80">
+                    {c.tagline ? `${c.tagline}. ` : ""}
+                    <span className="tabular-nums">{c.count} {c.count === 1 ? "piece" : "pieces"}</span>
+                  </p>
+                </div>
               </Link>
             </li>
           ))}
@@ -95,7 +130,8 @@ export default async function Home() {
       </section>
 
       {/* Made to measure */}
-      <section className="mt-24 bg-indigo text-paper lg:mt-32" aria-labelledby="mtm">
+      <section className="relative isolate mt-24 overflow-hidden bg-indigo text-paper lg:mt-32" aria-labelledby="mtm">
+        <div aria-hidden className="absolute inset-0 -z-10 bg-[url('/media/adire.svg')] bg-[length:160px_160px] opacity-[0.06]" />
         <div className="mx-auto grid max-w-[1440px] gap-10 px-4 py-16 sm:px-6 lg:grid-cols-12 lg:px-10 lg:py-24">
           <div className="lg:col-span-5">
             <div className="relative aspect-[9/14] w-full max-w-md overflow-hidden bg-indigo-soft">

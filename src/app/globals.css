@@ -158,6 +158,15 @@ textarea {
   color: #fff;
   border-color: var(--color-ink);
 }
+.btn-ghost {
+  border: 1px solid rgb(255 255 255 / 0.55);
+  color: #fff;
+}
+.btn-ghost:hover {
+  background: #fff;
+  color: var(--color-ink);
+  border-color: #fff;
+}
 .btn-paper {
   background: #fff;
   color: var(--color-ink);
